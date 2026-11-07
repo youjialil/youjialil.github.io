@@ -1,0 +1,271 @@
+/* ============================================
+   自定义样式（在主题的 inject.head 里引入，排在 style.css 之后）
+   ============================================ */
+
+/* --------------------------------------------
+   头图遮罩
+   主题原本给头图加 rgba(0,0,0,0.3) 的黑遮罩，
+   但这里曾被设成透明，导致白色标题压在浅色头图上看不清。
+   改成 40% 黑遮罩：图片照样可见，白色标题有对比。
+   -------------------------------------------- */
+#page-header:not(.not-top-img)::before {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* --------------------------------------------
+   页脚
+   原来是透明背景 + 浅灰文字（#eee），压在浅色背景图上同样看不清。
+   改成半透明白底 + 深色文字，保留"透出背景"的效果。
+   -------------------------------------------- */
+#footer {
+  background: rgba(255, 255, 255, 0.88) !important;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+#footer::before {
+  background: transparent !important;
+}
+
+#footer > * {
+  color: #1f2d3d !important;
+}
+
+#footer a {
+  color: #1f2d3d !important;
+}
+
+#footer a:hover {
+  color: #49b1f5 !important;
+}
+
+#footer .footer-separator {
+  color: #999 !important;
+}
+
+/* ============================================
+   正文字体改纯黑
+   主题默认：--font-color #4c4948（深灰）/ 标题 #1f2d3d
+   只覆盖浅色模式；深色模式在 [data-theme="dark"] 里单独定义，不受影响
+   ============================================ */
+
+html[data-theme="light"] {
+  --font-color: #000;
+  --text-highlight-color: #000;
+  --search-input-color: #000;
+  --search-a-color: #000;
+}
+
+/* 阅读模式（正文浮层）也统一成黑色 */
+.read-mode {
+  --font-color: #000;
+}
+
+/* ============================================
+   可选：想调大字号 / 加宽正文，把下面区块的注释去掉
+   Butterfly 默认：body 14px，#content-inner 1200px
+   ============================================ */
+
+/*
+body {
+  font-size: 15px;
+}
+
+#content-inner {
+  max-width: 1400px;
+}
+*/
+
+/* --------------------------------------------
+   微调：浅灰底 + 卡片投影加强
+   背景图清空后页面是纯白，白卡片和背景糊在一起，
+   这里给浅色模式一点底色差，并让卡片投影更明确。
+   -------------------------------------------- */
+html[data-theme="light"] body {
+  background-color: #f6f7f9;
+}
+
+html[data-theme="light"] {
+  --card-box-shadow: 0 4px 12px rgba(7, 17, 27, 0.10);
+  --card-hover-box-shadow: 0 6px 18px rgba(7, 17, 27, 0.15);
+}
+
+/* ============================================
+   日记总览页 /diary/
+   按月折叠的紧凑列表，几十上百篇也能快速翻。
+   ============================================ */
+
+.diary-intro {
+  margin-bottom: 1.4rem;
+  line-height: 1.8;
+}
+
+.diary-intro p {
+  margin: 0.2rem 0;
+}
+
+.diary-stats {
+  font-size: 0.85rem;
+  color: var(--card-meta);
+}
+
+.diary-months {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.diary-month {
+  border: 1px solid rgba(128, 128, 128, 0.22);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.diary-month > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+  background: rgba(128, 128, 128, 0.06);
+  user-select: none;
+}
+
+.diary-month > summary::-webkit-details-marker {
+  display: none;
+}
+
+.diary-month > summary::before {
+  content: '▸';
+  flex: 0 0 auto;
+  color: var(--card-meta);
+  transition: transform 0.2s ease;
+}
+
+.diary-month[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.diary-month-label {
+  flex: 1;
+}
+
+.diary-month-count {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--card-meta);
+}
+
+.diary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.diary-item {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+.diary-item:hover {
+  background: rgba(73, 177, 245, 0.07);
+}
+
+.diary-date {
+  flex: 0 0 3.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.25;
+  text-decoration: none !important;
+  color: var(--default-bg-color, #49b1f5) !important;
+}
+
+.diary-date b {
+  font-size: 1rem;
+}
+
+.diary-date span {
+  font-size: 0.72rem;
+  color: var(--card-meta);
+}
+
+.diary-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.diary-title {
+  display: block;
+  font-weight: 600;
+  color: var(--text-highlight-color) !important;
+  margin-bottom: 0.15rem;
+}
+
+.diary-summary {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--card-meta);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.diary-empty {
+  padding: 1.2rem;
+  border: 1px dashed rgba(128, 128, 128, 0.3);
+  border-radius: 8px;
+  color: var(--card-meta);
+}
+
+.diary-empty p {
+  margin: 0.2rem 0;
+}
+
+.diary-empty code {
+  color: var(--font-color);
+}
+
+@media screen and (max-width: 768px) {
+  .diary-item {
+    gap: 0.6rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .diary-date {
+    flex: 0 0 2.9rem;
+  }
+}
+/* 周总结 / 月总结：折叠在日记列表上方 */
+.diary-summaries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.diary-tag {
+  flex: 0 0 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2rem;
+  border-radius: 6px;
+  background: rgba(73, 177, 245, 0.12);
+  color: var(--default-bg-color, #49b1f5);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .diary-tag {
+    flex: 0 0 2rem;
+    height: 2rem;
+  }
+}
